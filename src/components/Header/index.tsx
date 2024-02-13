@@ -1,6 +1,7 @@
 import Container from "../ui/container";
 import Menu from "./menu";
 import Logo from "./logo";
+import { Link } from "react-router-dom";
 
 const Header = () => {
   return (
@@ -9,7 +10,11 @@ const Header = () => {
         <div className="flex justify-between py-4">
           <Logo />
           <Menu />
-          {/* <Metamask Button /> */}
+          <Link to="/login">
+            <div className="flex items-center justify-center rounded-lg w-[100px] py-2 bg-slate-500 text-white cursor-pointer">
+              Login
+            </div>
+          </Link>
         </div>
       </Container>
     </header>
