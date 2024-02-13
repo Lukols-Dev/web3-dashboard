@@ -1,5 +1,7 @@
+import BaseRoute from "./routes";
+
 const App = () => {
-  return <div>hello app</div>;
+  return <BaseRoute />;
 };
 
 export default App;
