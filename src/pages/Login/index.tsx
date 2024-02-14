@@ -3,10 +3,14 @@ import Button from "../../components/ui/button";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { setMetaMaskInstalled } from "../../store/slices/walletSlice";
 import { connectMetaMask } from "../../store/thunks/connectMetaMask";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { isMetaMaskInstalled } = useAppSelector((state) => state.wallet);
+  const { isMetaMaskInstalled, isConnected, address } = useAppSelector(
+    (state) => state.wallet
+  );
 
   const { ethereum } = window;
 
@@ -21,6 +25,11 @@ const LoginPage = () => {
   useEffect(() => {
     dispatch(setMetaMaskInstalled(checkWalletInstalled()));
   }, [dispatch]);
+
+  useEffect(() => {
+    if (!isConnected || !address) return;
+    navigate("/wallet");
+  }, [isConnected, address]);
 
   return (
     <main className="w-screen h-screen flex items-center justify-center">

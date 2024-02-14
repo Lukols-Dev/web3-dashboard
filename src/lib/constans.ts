@@ -9,10 +9,6 @@ export const MENU: MenuItem[] = [
     title: "Wallet Dashboard",
     path: "/wallet",
   },
-  {
-    title: "CONTACT",
-    path: "/kontakt",
-  },
 ];
 
 export const CHAINS: Chains = {

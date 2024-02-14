@@ -2,6 +2,7 @@ import { FC } from "react";
 import { Landing, Login, Transfers, WalletInfo } from "../pages";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import RootLayout from "../components/layouts/root";
+import PrivateRoutes from "./private-route";
 
 const BaseRoute: FC = () => {
   return (
@@ -10,12 +11,14 @@ const BaseRoute: FC = () => {
         {/* public routes */}
         <Route element={<RootLayout />}>
           <Route path="/" element={<Landing />} />
-          <Route path="/wallet" element={<WalletInfo />} />
-          <Route path="/transfer" element={<Transfers />} />
           <Route path="/login" element={<Login />} />
-        </Route>
 
-        {/* private routes */}
+          {/* private routes */}
+          <Route element={<PrivateRoutes />}>
+            <Route path="/wallet" element={<WalletInfo />} />
+            <Route path="/transfer" element={<Transfers />} />
+          </Route>
+        </Route>
       </Routes>
     </BrowserRouter>
   );
