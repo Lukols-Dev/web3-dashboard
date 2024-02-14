@@ -70,6 +70,11 @@ const walletSlice = createSlice({
   },
 });
 
-export const { setAddress, setMetaMaskInstalled, setIsConnected, logout } =
-  walletSlice.actions;
+export const {
+  setAddress,
+  setMetaMaskInstalled,
+  setIsConnected,
+  setNetworkChainId,
+  logout,
+} = walletSlice.actions;
 export default walletSlice.reducer;

@@ -1,5 +1,9 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { setAddress, setIsConnected } from "../slices/walletSlice";
+import {
+  setAddress,
+  setIsConnected,
+  setNetworkChainId,
+} from "../slices/walletSlice";
 
 export const connectMetaMask = createAsyncThunk(
   "wallet/connectMetaMask",
@@ -13,8 +17,11 @@ export const connectMetaMask = createAsyncThunk(
     }
 
     const accounts = await ethereum.request({ method: "eth_requestAccounts" });
+    const chainId = await ethereum.request({ method: "eth_chainId" });
+
     dispatch(setAddress(accounts[0]));
     dispatch(setIsConnected(true));
+    dispatch(setNetworkChainId(chainId));
     return accounts[0];
   }
 );

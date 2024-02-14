@@ -23,10 +23,16 @@ const WalletInfoPage = () => {
   };
 
   useEffect(() => {
-    if (currentAddress) {
+    if (currentAddress && currentNetworkChainId) {
       tokens.forEach((token) => {
         dispatch(fetchTokenBalance({ currentAddress, token: token }));
       });
+    }
+  }, [currentAddress, currentNetworkChainId, dispatch]);
+
+  useEffect(() => {
+    if (currentNetworkChainId) {
+      setSelectedChainId(currentNetworkChainId);
     }
   }, [currentAddress, currentNetworkChainId, dispatch]);
 
@@ -34,11 +40,7 @@ const WalletInfoPage = () => {
     <main className="w-screen h-screen flex items-center justify-center">
       <div className="w-full md:w-1/3 h-1/2 flex flex-col items-center justify-center gap-4 p-4">
         <h1>Wallet Info Page</h1>
-        <select
-          value={selectedChainId}
-          onChange={handleNetworkChange}
-          defaultValue=""
-        >
+        <select value={selectedChainId} onChange={handleNetworkChange}>
           <option value="" disabled>
             Select a Network
           </option>

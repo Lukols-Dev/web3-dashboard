@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { setAddress } from "../slices/walletSlice";
+import { setAddress, setNetworkChainId } from "../slices/walletSlice";
 
 export const setupAccountChangeListener = createAsyncThunk(
   "wallet/setupAccountChangeListener",
@@ -11,6 +11,13 @@ export const setupAccountChangeListener = createAsyncThunk(
           dispatch(setAddress(accounts[0]));
         } else {
           dispatch(setAddress(null));
+        }
+      });
+      ethereum.on("chainChanged", (chain: string) => {
+        if (chain.length > 0) {
+          dispatch(setNetworkChainId(chain));
+        } else {
+          dispatch(setNetworkChainId(null));
         }
       });
     }

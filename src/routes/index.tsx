@@ -8,12 +8,12 @@ const BaseRoute: FC = () => {
   return (
     <BrowserRouter>
       <Routes>
-        {/* public routes */}
+        {/* PUBLIC routes */}
         <Route element={<RootLayout />}>
           <Route path="/" element={<Landing />} />
           <Route path="/login" element={<Login />} />
 
-          {/* private routes */}
+          {/* PRIVATE routes */}
           <Route element={<PrivateRoutes />}>
             <Route path="/wallet" element={<WalletInfo />} />
             <Route path="/transfer" element={<Transfers />} />
