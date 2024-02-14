@@ -14,3 +14,10 @@ export const MENU: MenuItem[] = [
     path: "/kontakt",
   },
 ];
+
+export const CHAINS = {
+  "0x1": "Ethereum Mainnet",
+  "0x3": "Ropsten Testnet",
+  "0x4": "Rinkeby Testnet",
+  "0xaa36a7": "Sepolia Testnet",
+};
