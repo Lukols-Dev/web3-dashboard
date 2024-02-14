@@ -1,13 +1,22 @@
 interface Props {
   placeholder: string;
   name: string;
-  type: "text" | "number";
   value: string;
+  disabled?: boolean;
+  type: "text" | "number";
   handleChange: (e: any, name: string) => void;
 }
 
-const Input = ({ placeholder, name, type, value, handleChange }: Props) => (
+const Input = ({
+  placeholder,
+  name,
+  type,
+  value,
+  disabled,
+  handleChange,
+}: Props) => (
   <input
+    disabled={disabled}
     placeholder={placeholder}
     type={type}
     step="0.0001"

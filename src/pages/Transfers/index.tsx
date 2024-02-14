@@ -17,16 +17,9 @@ const TransferPage = () => {
     message: "",
   });
 
-  const [_transactions, _setTransactions] = useState([]);
-
   const handleChange = (e: any, name: string) => {
     setformData((prevState) => ({ ...prevState, [name]: e.target.value }));
   };
-
-  // const setMaxAmount = () => {
-  //   setformData((prevState) => ({ ...prevState, [amount]: e.target.value }));
-
-  // }
 
   const handleSubmit = (e: any) => {
     const { addressTo, amount, message } = formData;
@@ -47,20 +40,10 @@ const TransferPage = () => {
             ? CHAINS[currentNetwork] || "Unknown Network"
             : "Unknown Network"}
         </span>
-        {currentNetwork !== "0x4" && (
-          <div className="text-red-500 text-sm absolute -bottom-12 right-0">
-            Only Rinkeby
-            <button
-              className="p-2 border rounded-full"
-              onClick={() => dispatch(switchNetwork("0x4"))}
-            >
-              change network
-            </button>
-          </div>
-        )}
       </div>
-      <div className="p-5 sm:w-96 w-full flex flex-col justify-start items-center blue-glassmorphism">
+      <div className="p-5 sm:w-96 w-full flex flex-col justify-start items-center relative">
         <Input
+          disabled={currentNetwork !== "0x4"}
           placeholder="Address To"
           name="addressTo"
           type="text"
@@ -68,6 +51,7 @@ const TransferPage = () => {
           handleChange={handleChange}
         />
         <Input
+          disabled={currentNetwork !== "0x4"}
           placeholder="Amount (ETH)"
           name="amount"
           type="number"
@@ -75,6 +59,7 @@ const TransferPage = () => {
           handleChange={handleChange}
         />
         <Input
+          disabled={currentNetwork !== "0x4"}
           placeholder="Enter Message"
           name="message"
           type="text"
@@ -83,12 +68,24 @@ const TransferPage = () => {
         />
         <div className="h-[1px] w-full bg-gray-400 my-2" />
         <button
+          disabled={currentNetwork !== "0x4"}
           type="button"
           onClick={handleSubmit}
-          className="text-white w-full mt-2 border-[1px] p-2 border-[#3d4f7c] hover:bg-[#3d4f7c] rounded-full cursor-pointer"
+          className="text-black w-full mt-2 border-[1px] p-2 border-[#3d4f7c] hover:bg-[#3d4f7c] rounded-full cursor-pointer"
         >
           Send now
         </button>
+        {currentNetwork !== "0x4" && (
+          <div className="w-full h-full bg-gray-400/90 absolute top-0 left-0 flex flex-col gap-4 items-center justify-center text-black text-xl font-bold">
+            Only Rinkeby
+            <button
+              className="p-2 border border-black rounded-full hover:bg-gray-300"
+              onClick={() => dispatch(switchNetwork("0x4"))}
+            >
+              Change Network
+            </button>
+          </div>
+        )}
       </div>
     </main>
   );
