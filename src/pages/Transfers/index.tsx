@@ -1,121 +1,86 @@
-import { ethers } from "ethers";
 import { useState } from "react";
-import abi from "../../lib/abi.json";
-import { useAppSelector } from "../../hooks";
-
-const { ethereum } = window;
+import { useAppDispatch, useAppSelector } from "../../hooks";
+import { CHAINS } from "../../lib/constans";
+import { switchNetwork } from "../../store/thunks/switchNetworkMetaMask";
+import { Transaction } from "../../types";
+import { sendTransaction } from "../../lib/ethereum";
+import Input from "../../components/ui/input";
 
 const TransferPage = () => {
+  const dispatch = useAppDispatch();
   const currentAddress = useAppSelector((state) => state.wallet.address);
+  const currentNetwork = useAppSelector((state) => state.wallet.networkChainId);
 
-  const [formData, setformData] = useState({
+  const [formData, setformData] = useState<Transaction>({
     addressTo: "",
     amount: "",
-    keyword: "",
     message: "",
   });
-  const [_transactionCount, setTransactionCount] = useState(
-    localStorage.getItem("transactionCount")
-  );
+
   const [_transactions, _setTransactions] = useState([]);
 
-  const handleChange = (e: any, name: any) => {
+  const handleChange = (e: any, name: string) => {
     setformData((prevState) => ({ ...prevState, [name]: e.target.value }));
   };
 
-  const createEthereumContract = () => {
-    if (!ethereum || !currentAddress) return;
-    const provider = new ethers.providers.Web3Provider(ethereum);
-    const signer = provider.getSigner();
-    const transactionsContract = new ethers.Contract(
-      "0xfCCF80344a668b72ac4Be23513F0E9E4a35C84fA",
-      abi.abi,
-      signer
-    );
+  // const setMaxAmount = () => {
+  //   setformData((prevState) => ({ ...prevState, [amount]: e.target.value }));
 
-    return transactionsContract;
-  };
-
-  const sendTransaction = async () => {
-    if (!ethereum) return;
-
-    try {
-      const { addressTo, amount, keyword, message } = formData;
-      const transactionsContract = createEthereumContract();
-      const parsedAmount = ethers.utils.parseEther(amount);
-
-      await ethereum.request({
-        method: "eth_sendTransaction",
-        params: [
-          {
-            from: currentAddress,
-            to: addressTo,
-            gas: "0x5208",
-            value: parsedAmount._hex,
-          },
-        ],
-      });
-
-      if (transactionsContract) {
-        const transactionHash = await transactionsContract.addToBlockchain(
-          addressTo,
-          parsedAmount,
-          message,
-          keyword
-        );
-        await transactionHash.wait();
-        const transactionsCount =
-          await transactionsContract.getTransactionCount();
-        setTransactionCount(transactionsCount.toNumber());
-        window.location.reload();
-      } else {
-        console.log("No transactions contract ");
-      }
-    } catch (error) {
-      console.log(error);
-
-      throw new Error("No ethereum object");
-    }
-  };
+  // }
 
   const handleSubmit = (e: any) => {
-    const { addressTo, amount, keyword, message } = formData;
+    const { addressTo, amount, message } = formData;
 
     e.preventDefault();
 
-    if (!addressTo || !amount || !keyword || !message) return;
+    if (!addressTo || !amount || !message) return;
 
-    sendTransaction();
+    sendTransaction(formData, currentAddress);
   };
 
   return (
-    <main className="w-screen h-screen flex items-center justify-center">
+    <main className="w-screen h-screen flex flex-col gap-9 items-center justify-center">
+      <div className="flex gap-4 items-center justify-center relative">
+        Current Network:
+        <span className="p-4 bg-gray-300 rounded-md">
+          {currentNetwork
+            ? CHAINS[currentNetwork] || "Unknown Network"
+            : "Unknown Network"}
+        </span>
+        {currentNetwork !== "0x4" && (
+          <div className="text-red-500 text-sm absolute -bottom-12 right-0">
+            Only Rinkeby
+            <button
+              className="p-2 border rounded-full"
+              onClick={() => dispatch(switchNetwork("0x4"))}
+            >
+              change network
+            </button>
+          </div>
+        )}
+      </div>
       <div className="p-5 sm:w-96 w-full flex flex-col justify-start items-center blue-glassmorphism">
         <Input
           placeholder="Address To"
           name="addressTo"
           type="text"
+          value={formData.addressTo}
           handleChange={handleChange}
         />
         <Input
           placeholder="Amount (ETH)"
           name="amount"
           type="number"
-          handleChange={handleChange}
-        />
-        <Input
-          placeholder="Keyword (Gif)"
-          name="keyword"
-          type="text"
+          value={formData.amount}
           handleChange={handleChange}
         />
         <Input
           placeholder="Enter Message"
           name="message"
           type="text"
+          value={formData.message}
           handleChange={handleChange}
         />
-
         <div className="h-[1px] w-full bg-gray-400 my-2" />
         <button
           type="button"
@@ -130,14 +95,3 @@ const TransferPage = () => {
 };
 
 export default TransferPage;
-
-const Input = ({ placeholder, name, type, value, handleChange }: any) => (
-  <input
-    placeholder={placeholder}
-    type={type}
-    step="0.0001"
-    value={value}
-    onChange={(e) => handleChange(e, name)}
-    className="my-2 w-full rounded-sm p-2 outline-none bg-transparent text-black border border-black text-sm white-glassmorphism"
-  />
-);

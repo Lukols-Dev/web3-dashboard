@@ -1,12 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { connectMetaMask } from "../thunks/connectMetaMask";
 import { switchNetwork } from "../thunks/switchNetworkMetaMask";
+import { fetchTokenBalance } from "../thunks/fetchTokenBalance";
 
 interface WalletState {
   address: string | null;
   networkChainId: string | null;
   isMetaMaskInstalled: boolean;
   isConnected: boolean;
+  tokenBalances: { [symbol: string]: string };
 }
 
 const initialState: WalletState = {
@@ -14,6 +16,7 @@ const initialState: WalletState = {
   networkChainId: null,
   isMetaMaskInstalled: false,
   isConnected: false,
+  tokenBalances: {},
 };
 
 const walletSlice = createSlice({
@@ -49,6 +52,10 @@ const walletSlice = createSlice({
       .addCase(switchNetwork.fulfilled, (state, action) => {
         state.networkChainId = action.payload;
       })
+      .addCase(fetchTokenBalance.fulfilled, (state, action) => {
+        const { symbol, balance } = action.payload;
+        state.tokenBalances[symbol] = balance;
+      })
       //rejected
       .addCase(connectMetaMask.rejected, (state, action) => {
         console.error(action.error.message);
@@ -56,6 +63,9 @@ const walletSlice = createSlice({
       })
       .addCase(switchNetwork.rejected, (_state, action) => {
         console.error("Failed to switch network: ", action.payload);
+      })
+      .addCase(fetchTokenBalance.rejected, (_state, action) => {
+        console.error("Failed to fetch token balance: ", action.error.message);
       });
   },
 });

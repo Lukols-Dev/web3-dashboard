@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { ethers } from "ethers";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { switchNetwork } from "../../store/thunks/switchNetworkMetaMask";
 import { CHAINS } from "../../lib/constans";
+import { fetchTokenBalance } from "../../store/thunks/fetchTokenBalance";
 
 const WalletInfoPage = () => {
   const dispatch = useAppDispatch();
@@ -10,10 +10,9 @@ const WalletInfoPage = () => {
     (state) => state.wallet.networkChainId
   );
   const currentAddress = useAppSelector((state) => state.wallet.address);
-  const [selectedChainId, setSelectedChainId] = useState<string>("");
-  const [tokenBalances, setTokenBalances] = useState({});
+  const tokenBalances = useAppSelector((state) => state.wallet.tokenBalances);
 
-  const { ethereum } = window;
+  const [selectedChainId, setSelectedChainId] = useState<string>("");
 
   const handleNetworkChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const newChainId = event.target.value;
@@ -23,44 +22,13 @@ const WalletInfoPage = () => {
     }
   };
 
-  const getTokenBalances = async () => {
-    if (!currentAddress || !ethereum) return;
-
-    const provider = new ethers.providers.Web3Provider(ethereum);
-    const balances: any = {};
-
-    for (const token of tokens) {
-      try {
-        let balance;
-
-        if (token.symbol === "ETH") {
-          balance = await provider.getBalance(currentAddress);
-        } else {
-          const tokenContract = new ethers.Contract(
-            token.address,
-            [
-              "function balanceOf(address owner) external view returns (uint256)",
-            ],
-            provider
-          );
-          balance = await tokenContract.balanceOf(currentAddress);
-        }
-
-        balances[token.symbol] = ethers.utils.formatUnits(balance, 18);
-      } catch (error) {
-        console.error(`Unable to fetch ${token.symbol} balance:`, error);
-        balances[token.symbol] = "Error";
-      }
-    }
-
-    setTokenBalances(balances);
-  };
-
   useEffect(() => {
-    if (currentAddress && currentNetworkChainId) {
-      getTokenBalances();
+    if (currentAddress) {
+      tokens.forEach((token) => {
+        dispatch(fetchTokenBalance({ currentAddress, token: token }));
+      });
     }
-  }, [currentAddress, currentNetworkChainId]);
+  }, [currentAddress, currentNetworkChainId, dispatch]);
 
   return (
     <main className="w-screen h-screen flex items-center justify-center">
@@ -82,7 +50,7 @@ const WalletInfoPage = () => {
         </select>
         {Object.entries(tokenBalances).map(([symbol, balance]) => (
           <p key={symbol}>
-            {symbol} Balance: {balance as any}
+            {symbol} Balance: {balance}
           </p>
         ))}
       </div>

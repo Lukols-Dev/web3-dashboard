@@ -1,4 +1,4 @@
-import { MenuItem } from "../types";
+import { Chains, MenuItem } from "../types";
 
 export const MENU: MenuItem[] = [
   {
@@ -15,7 +15,7 @@ export const MENU: MenuItem[] = [
   },
 ];
 
-export const CHAINS = {
+export const CHAINS: Chains = {
   "0x1": "Ethereum Mainnet",
   "0x3": "Ropsten Testnet",
   "0x4": "Rinkeby Testnet",
