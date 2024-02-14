@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { About, Landing, Login } from "../pages";
+import { Landing, Login, Transfers, WalletInfo } from "../pages";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import RootLayout from "../components/layouts/root";
 
@@ -10,7 +10,8 @@ const BaseRoute: FC = () => {
         {/* public routes */}
         <Route element={<RootLayout />}>
           <Route path="/" element={<Landing />} />
-          <Route path="/about" element={<About />} />
+          <Route path="/wallet" element={<WalletInfo />} />
+          <Route path="/transfer" element={<Transfers />} />
           <Route path="/login" element={<Login />} />
         </Route>
 

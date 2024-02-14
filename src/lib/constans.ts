@@ -2,12 +2,12 @@ import { MenuItem } from "../types";
 
 export const MENU: MenuItem[] = [
   {
-    title: "ABOUT",
-    path: "/about",
+    title: "Transfers",
+    path: "/transfer",
   },
   {
-    title: "LUKOLS",
-    path: "/lukols",
+    title: "Wallet Dashboard",
+    path: "/wallet",
   },
   {
     title: "CONTACT",
