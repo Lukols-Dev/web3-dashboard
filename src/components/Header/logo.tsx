@@ -5,7 +5,7 @@ const Logo = () => {
   return (
     <Link to="/">
       <div className="flex items-center justify-center">
-        <BringToFront className="w-6 h-6" />
+        <BringToFront className="w-6 h-6" role="img" aria-label="Logo" />
       </div>
     </Link>
   );
