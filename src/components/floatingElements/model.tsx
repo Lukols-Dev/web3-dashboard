@@ -1,9 +1,18 @@
 import { useEffect, useState } from "react";
 import { useGLTF, Float } from "@react-three/drei";
-import { useTransform } from "framer-motion";
+import { useTransform, MotionValue } from "framer-motion";
 import { motion } from "framer-motion-3d";
 
-export default function Model({ mouse }: any) {
+interface MouseMotionValues {
+  x: MotionValue<number>;
+  y: MotionValue<number>;
+}
+
+interface Props {
+  mouse: MouseMotionValues;
+}
+
+const Model = ({ mouse }: Props) => {
   const [activeShape, setActiveShape] = useState<number>(1);
 
   useEffect(() => {
@@ -87,11 +96,11 @@ export default function Model({ mouse }: any) {
       />
     </group>
   );
-}
+};
 
 useGLTF.preload("/assets/3d/floating_shapes4.glb");
 
-function Mesh({ node, multiplier, mouse, isActive }: any) {
+const Mesh = ({ node, multiplier, mouse, isActive }: any) => {
   const { geometry, material, position, scale, rotation } = node;
   const a = multiplier / 2;
   const rotationX = useTransform(
@@ -140,4 +149,6 @@ function Mesh({ node, multiplier, mouse, isActive }: any) {
       />
     </Float>
   );
-}
+};
+
+export default Model;

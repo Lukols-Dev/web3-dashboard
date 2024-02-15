@@ -32,8 +32,8 @@ const LoginPage = () => {
   }, [isConnected, address]);
 
   return (
-    <main className="w-screen h-screen flex items-center justify-center">
-      <div className="w-full md:w-1/3 h-1/2 flex flex-col items-center justify-center gap-4 p-4">
+    <main className="w-screen h-screen flex items-center justify-center z-20">
+      <div className="w-full md:w-1/3 flex flex-col items-center justify-center gap-4 p-4 bg-white">
         <Button onClick={connect}>
           <img
             className="w-10 h-10 absolute left-4"

@@ -12,3 +12,8 @@ export type Transaction = {
   amount: string;
   message: string;
 };
+
+export type Token = {
+  symbol: string;
+  address: string;
+};

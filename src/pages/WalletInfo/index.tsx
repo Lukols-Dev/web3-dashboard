@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../hooks";
 import { switchNetwork } from "../../store/thunks/switchNetworkMetaMask";
-import { CHAINS } from "../../lib/constans";
+import { CHAINS, TOKENS } from "../../lib/constans";
 import { fetchTokenBalance } from "../../store/thunks/fetchTokenBalance";
 
 const WalletInfoPage = () => {
@@ -24,7 +24,7 @@ const WalletInfoPage = () => {
 
   useEffect(() => {
     if (currentAddress && currentNetworkChainId) {
-      tokens.forEach((token) => {
+      TOKENS.forEach((token) => {
         dispatch(fetchTokenBalance({ currentAddress, token: token }));
       });
     }
@@ -37,7 +37,7 @@ const WalletInfoPage = () => {
   }, [currentAddress, currentNetworkChainId, dispatch]);
 
   return (
-    <main className="w-screen h-screen flex items-center justify-center">
+    <main className="w-screen h-screen flex items-center justify-center z-20">
       <div className="w-full md:w-1/3 h-1/2 flex flex-col items-center justify-center gap-4 p-4">
         <h1>Wallet Info Page</h1>
         <select value={selectedChainId} onChange={handleNetworkChange}>
@@ -61,14 +61,3 @@ const WalletInfoPage = () => {
 };
 
 export default WalletInfoPage;
-
-const tokens = [
-  {
-    symbol: "ETH",
-    address: "",
-  },
-  {
-    symbol: "DAI",
-    address: "0x6B175474E89094C44Da98b954EedeAC495271d0F",
-  },
-];

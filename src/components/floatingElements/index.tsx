@@ -15,7 +15,7 @@ export default function FloatingElements() {
     y: useSpring(mouse.y, { stiffness: 75, damping: 100, mass: 3 }),
   };
 
-  const manageMouse = (e: any) => {
+  const manageMouse = (e: MouseEvent) => {
     const { innerWidth, innerHeight } = window;
     const { clientX, clientY } = e;
     const x = clientX / innerWidth;

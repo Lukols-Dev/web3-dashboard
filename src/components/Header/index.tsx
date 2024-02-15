@@ -16,7 +16,7 @@ const Header = () => {
   };
 
   return (
-    <header className="w-full bg-transparent absolute top-0 z-10 ">
+    <header className="w-full bg-transparent absolute top-0 z-30 ">
       <Container>
         <div className="flex justify-between py-4">
           <Logo />

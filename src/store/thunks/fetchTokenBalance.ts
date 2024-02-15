@@ -1,9 +1,18 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { ethers } from "ethers";
+import { Token } from "../../types";
+
+interface FetchTokenBalanceArgs {
+  currentAddress: string;
+  token: Token;
+}
 
 export const fetchTokenBalance = createAsyncThunk(
   "wallet/fetchTokenBalance",
-  async ({ currentAddress, token }: any, { rejectWithValue }) => {
+  async (
+    { currentAddress, token }: FetchTokenBalanceArgs,
+    { rejectWithValue }
+  ) => {
     if (!window.ethereum) return rejectWithValue("Ethereum object not found");
     try {
       const provider = new ethers.providers.Web3Provider(window.ethereum);

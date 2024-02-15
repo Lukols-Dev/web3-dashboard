@@ -4,7 +4,7 @@ interface Props {
   value: string;
   disabled?: boolean;
   type: "text" | "number";
-  handleChange: (e: any, name: string) => void;
+  handleChange: (e: React.ChangeEvent<HTMLInputElement>, name: string) => void;
 }
 
 const Input = ({
