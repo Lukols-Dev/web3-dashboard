@@ -24,14 +24,17 @@ const TransferPage = () => {
     setformData((prevState) => ({ ...prevState, [name]: e.target.value }));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLButtonElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLButtonElement>) => {
     const { addressTo, amount, message } = formData;
-
     e.preventDefault();
 
     if (!addressTo || !amount || !message) return;
-
-    sendTransaction(formData, currentAddress);
+    try {
+      await sendTransaction(formData, currentAddress);
+      setformData((prevState) => ({ ...prevState, amount: "", message: "" }));
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
