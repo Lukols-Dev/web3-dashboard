@@ -4,6 +4,7 @@ import { useEffect } from "react";
 import { useAppDispatch } from "../../hooks";
 import { setupAccountChangeListener } from "../../store/thunks/accountChangeListener";
 import FloatingElements from "../floatingElements";
+import Preloader from "../Preloader";
 
 const RootLayout = () => {
   const dispatch = useAppDispatch();
@@ -13,6 +14,7 @@ const RootLayout = () => {
   }, [dispatch]);
   return (
     <div className="flex flex-col relative">
+      <Preloader />
       <Header />
       <Outlet />
       <div className="absolute top-0 left-0 h-screen w-screen">
